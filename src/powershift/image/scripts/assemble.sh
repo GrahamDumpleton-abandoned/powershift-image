@@ -31,6 +31,21 @@ if [ x"$S2I_SOURCE_PATH" != x`pwd` ]; then
     exit 1
 fi
 
+# We need rename the 'powershift' script and wrap it with a shell script
+# wrapper so that SCL package enabling kicks in due to the BASH_ENV hack.
+
+S2I_POWERSHIFT_PATH=`which powershift`
+
+mv $S2I_POWERSHIFT_PATH $S2I_POWERSHIFT_PATH.py
+
+cat >> $S2I_POWERSHIFT_PATH << EOF
+#!/bin/bash
+
+exec $S2I_POWERSHIFT_PATH.py
+EOF
+
+chmod +x $S2I_POWERSHIFT_PATH
+
 # At this point the application source code is still located under the
 # directory '/tmp/src'. The source code or application artefacts
 # compiled from it will not be moved into place until the original
