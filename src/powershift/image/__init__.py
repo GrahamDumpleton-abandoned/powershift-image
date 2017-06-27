@@ -39,7 +39,9 @@ def command_image_assemble(ctx):
 
     """
 
-    os.execl(os.path.join(scripts, 'assemble.sh'))
+    path = os.path.join(scripts, 'assemble.sh')
+
+    os.execl(path, path)
 
 @group_image.command('run')
 @click.pass_context
@@ -49,7 +51,9 @@ def command_image_run(ctx):
 
     """
 
-    os.execl(os.path.join(scripts, 'run.sh'))
+    path = os.path.join(scripts, 'run.sh')
+
+    os.execl(path, path)
 
 @group_image.command('shell')
 @click.pass_context
@@ -59,7 +63,9 @@ def command_image_shell(ctx):
 
     """
 
-    os.execl(os.path.join(scripts, 'shell.sh'))
+    path = os.path.join(scripts, 'shell.sh')
+
+    os.execl(path, path)
 
 @group_image.command('exec')
 @click.pass_context
@@ -70,7 +76,9 @@ def command_image_exec(ctx, command):
 
     """
 
-    os.execl(os.path.join(scripts, 'exec.sh'), *command)
+    path = os.path.join(scripts, 'exec.sh')
+
+    os.execl(path, path, *command)
 
 
 @group_image.command('verify')
@@ -81,7 +89,9 @@ def command_image_verify(ctx):
 
     """
 
-    os.execl(os.path.join(scripts, 'verify.sh'))
+    path = os.path.join(scripts, 'verify.sh')
+
+    os.execl(path, path)
 
 @group_image.command('ready')
 @click.pass_context
@@ -91,7 +101,9 @@ def command_image_ready(ctx):
 
     """
 
-    os.execl(os.path.join(scripts, 'ready.sh'))
+    path = os.path.join(scripts, 'ready.sh')
+
+    os.execl(path, path)
 
 @group_image.command('alive')
 @click.pass_context
@@ -101,7 +113,9 @@ def command_image_alive(ctx):
 
     """
 
-    os.execl(os.path.join(scripts, 'alive.sh'))
+    path = os.path.join(scripts, 'alive.sh')
+
+    os.execl(path, path)
 
 @group_image.command('setup')
 @click.pass_context
@@ -111,7 +125,9 @@ def command_image_setup(ctx):
 
     """
 
-    os.execl(os.path.join(scripts, 'setup.sh'))
+    path = os.path.join(scripts, 'setup.sh')
+
+    os.execl(path, path)
 
 @group_image.command('migrate')
 @click.pass_context
@@ -121,4 +137,6 @@ def command_image_migrate(ctx):
 
     """
 
-    os.execl(os.path.join(scripts, 'migrate.sh'))
+    path = os.path.join(scripts, 'migrate.sh')
+
+    os.execl(path, path)
