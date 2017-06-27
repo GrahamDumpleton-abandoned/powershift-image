@@ -19,7 +19,7 @@ classifiers = [
 
 setup_kwargs = dict(
     name='powershift-image',
-    version='1.0.2',
+    version='1.0.3',
     description='PowerShift command plugin for working in S2I images.',
     long_description=long_description,
     url='https://github.com/getwarped/powershift-image',
