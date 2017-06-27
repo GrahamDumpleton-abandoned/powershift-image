@@ -42,7 +42,7 @@ fi
 # environment.
 
 if [ x"S2I_MARKERS_ENVIRON" != x"" ]; then
-    S2I_MARKERS_ENVIRON=`date`
+    S2I_MARKERS_ENVIRON=`/usr/bin/date`
     export S2I_MARKERS_ENVIRON
 
     if [ -f $S2I_SOURCE_PATH/.s2i/action_hooks/deploy_env ]; then
