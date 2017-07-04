@@ -123,32 +123,3 @@ fix-permissions $S2I_SOURCE_PATH
 if [ x`dirname $S2I_SOURCE_PATH` != x"$S2I_APPLICATION_PATH" ]; then
     fix-permissions $S2I_SOURCE_PATH
 fi
-
-# Now fix up the shell login environment so it will trigger 'deploy_env'.
-
-if [ x"$S2I_BASH_ENV" != x"" ]; then
-    if [ -f $S2I_BASH_ENV ]; then
-        cat >> $S2I_BASH_ENV << EOF
-# Now source the 'deploy_env' script from the '.s2i/action_hooks'
-# directory if it exists. This script allows a user to dynamically set
-# additional environment variables required by the deploy process. These
-# might for example be environment variables which tell an application
-# where files it requires are located. When we source the 'deploy_env'
-# script, any environment variables set by it will be automatically
-# exported. Note that we only source the 'deploy_env' script if it
-# hasn't already been run.
-
-if [ x"S2I_MARKERS_ENVIRON" != x"" ]; then
-    S2I_MARKERS_ENVIRON=\`/usr/bin/date\`
-    export S2I_MARKERS_ENVIRON
-
-    if [ -f $S2I_SOURCE_PATH/.s2i/action_hooks/deploy_env ]; then
-        S2I_SHELL_PWD=$PWD
-        cd $S2I_SOURCE_PATH
-        set -a; . $S2I_SOURCE_PATH/.s2i/action_hooks/deploy_env; set +a
-        cd $S2I_SHELL_PWD
-    fi
-fi
-EOF
-    fi
-fi
