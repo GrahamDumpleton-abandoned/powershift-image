@@ -41,7 +41,7 @@ mv $S2I_POWERSHIFT_PATH $S2I_POWERSHIFT_PATH-script.py
 cat >> $S2I_POWERSHIFT_PATH << EOF
 #!/bin/bash
 
-exec $S2I_POWERSHIFT_PATH-script.py "\$@"
+exec -a powershift $S2I_POWERSHIFT_PATH-script.py "\$@"
 EOF
 
 chmod +x $S2I_POWERSHIFT_PATH
