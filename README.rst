@@ -142,14 +142,14 @@ To add your own action hooks, create the following files as necessary:
 * ``.s2i/action_hooks/deploy``
 
 The ``pre_build``, ``build`` and ``deploy`` scripts must all be executable.
-This is necessary due to a [bug](https://github.com/docker/docker/issues/9547)
-in Docker support for some file systems. It is not possible for the
-``assemble`` script to do ``chmod +x`` on scripts prior to running. If you
-forget the implementation of actions hooks provided will warn you.
+This is necessary due to a bug in Docker support for some file systems. It
+is not possible for the ``assemble`` script to do ``chmod +x`` on scripts
+prior to running. If you forget the implementation of actions hooks
+provided will warn you.
 
 The ``pre_build``, ``build`` and ``deploy`` scripts would normally be shell
 scripts, but could technically be any executable program you can run to do
-what you need. If using a shell script, it is recommended to set:
+what you need. If using a shell script, it is recommended to set::
 
     set -eo pipefail
 
@@ -166,7 +166,7 @@ These ``build_env`` and ``deploy_env`` scripts can be used to set any
 environment variables you need to set. It is not necessary to export
 variables as any variables set in the scripts will be automatically
 exported. Being evaluated as a shell script, you can include shell logic or
-use inline parameter substitution. You can thus do things like:
+use inline parameter substitution. You can thus do things like::
 
     LOGLEVEL=${LOGLEVEL:-1}
 
@@ -177,7 +177,7 @@ exported to whatever is set at global scope.
 
 You should not print any messages from ``deploy_env`` as that will be
 executed for any shell session and the output may interfere with the result
-when running one off commands using ``oc exec`` or ``oc rsh``.
+when running one off commands using ``powershift image exec``.
 
 In the case of the ``pre_build`` action hook, be aware that unlike in V2,
 the application source code will not have been copied into place at that
@@ -220,6 +220,13 @@ the ``.s2i/action_hooks`` directory. It would be run with the corresponding
 sub command of ``powershift image``. In all cases the ``deploy_env`` script
 will be sourced to ensure that the same environment variables as would be
 used for the deployment of the application are also used for these.
+
+The benefit of using these action hooks triggered by a command, is that
+only the unchanging action command need be listed in build or deployment
+configurations if required. This makes it possible to make changes to what
+is run from the hook script and you do not need to ensure you update the
+build or deployment configuration in sync with the changes to the
+application source code.
 
 Interactive Shell and Commands
 ------------------------------
