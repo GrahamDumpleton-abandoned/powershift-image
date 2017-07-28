@@ -44,7 +44,6 @@ if [ x"S2I_MARKERS_ENVIRON" != x"" ]; then
     export S2I_MARKERS_ENVIRON
 
     if [ -f $S2I_SOURCE_PATH/.s2i/action_hooks/deploy_env ]; then
-        echo " -----> Running $S2I_SOURCE_PATH/.s2i/action_hooks/deploy_env"
         S2I_SHELL_PWD=$PWD
         set -a; . $S2I_SOURCE_PATH/.s2i/action_hooks/deploy_env; set +a
         cd $S2I_SHELL_PWD
