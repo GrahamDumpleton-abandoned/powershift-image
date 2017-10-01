@@ -68,10 +68,24 @@ if [ -f $S2I_SOURCE_PATH/.s2i/action_hooks/deploy ]; then
     fi
 fi
 
-# Now run the original 'run' script to start up the application. This
-# must be run using 'exec' so that the original 'run' script will take
-# over process ID 1. This is necessary so that the application will
-# receive signals properly.
+# Now run a user provided 'run' script if it exists, as a complete
+# replacement for the original 'run' script. This will replace this
+# process and so nothing below this point will be run.
+
+if [ -f $S2I_SOURCE_PATH/.s2i/action_hooks/run ]; then
+    if [ ! -x $S2I_SOURCE_PATH/.s2i/action_hooks/run ]; then
+        echo "ERROR: Script $S2I_SOURCE_PATH/.s2i/action_hooks/run not executable."
+        exit 1
+    else
+        echo " -----> Running $S2I_SOURCE_PATH/.s2i/action_hooks/run"
+        exec $S2I_SOURCE_PATH/.s2i/action_hooks/run
+    fi
+fi
+
+# If we get this far run the original 'run' script to start up the
+# application. This must be run using 'exec' so that the original 'run'
+# script will take over process ID 1. This is necessary so that the
+# application will receive signals properly.
 
 echo " -----> Running builder run script ($S2I_SCRIPTS_PATH/run)"
 

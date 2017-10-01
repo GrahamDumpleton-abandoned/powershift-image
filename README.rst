@@ -130,6 +130,11 @@ variables to be dynamically set. This can be important when needing to set
 environment variables dynamically based on information extracted from
 packages installed as part of the build process.
 
+Finally a ``run`` action hook is also allowed. This if supplied will
+supersede the ``run`` script provided in the S2I builder. It is expected
+that it runs the application to be deployed. It must not return and
+must ensure the application run inherits the process ID of the script.
+
 Using the Action Hooks
 ----------------------
 
@@ -140,16 +145,18 @@ To add your own action hooks, create the following files as necessary:
 * ``.s2i/action_hooks/build``
 * ``.s2i/action_hooks/deploy_env``
 * ``.s2i/action_hooks/deploy``
+* ``.s2i/action_hooks/run``
 
-The ``pre_build``, ``build`` and ``deploy`` scripts must all be executable.
-This is necessary due to a bug in Docker support for some file systems. It
-is not possible for the ``assemble`` script to do ``chmod +x`` on scripts
-prior to running. If you forget the implementation of actions hooks
-provided will warn you.
+The ``pre_build``, ``build``, ``deploy`` and ``run`` scripts must all be
+executable. This is necessary due to a bug in Docker support for some file
+systems. It is not possible for the ``assemble`` script to do ``chmod +x``
+on scripts prior to running. If you forget the implementation of actions
+hooks provided will warn you.
 
-The ``pre_build``, ``build`` and ``deploy`` scripts would normally be shell
-scripts, but could technically be any executable program you can run to do
-what you need. If using a shell script, it is recommended to set::
+The ``pre_build``, ``build``, ``deploy`` and ``run`` scripts would normally
+be shell scripts, but could technically be any executable program you can
+run to do what you need. If using a shell script, it is recommended to
+set::
 
     set -eo pipefail
 
