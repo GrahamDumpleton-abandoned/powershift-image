@@ -67,7 +67,7 @@ def command_image_shell(ctx):
 
     os.execl(path, path)
 
-@group_image.command('exec')
+@group_image.command('exec', context_settings=dict(ignore_unknown_options=True))
 @click.pass_context
 @click.argument('command', required=True, nargs=-1)
 def command_image_exec(ctx, command):
