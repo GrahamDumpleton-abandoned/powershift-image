@@ -59,11 +59,13 @@ fi
 echo " -----> Executing cron jobs ($1)"
 
 for script in $S2I_SOURCE_PATH/.s2i/cron_jobs/$1/*; do
-    if [ ! -x $script ]; then
-        echo "ERROR: Script $script not executable."
-        exit 1
-    else
-        echo " -----> Running $script"
-        stdbuf -oL $script
+    if [ -f $script ]; then
+        if [ ! -x $script ]; then
+            echo "ERROR: Script $script not executable."
+            exit 1
+        else
+            echo " -----> Running $script"
+            stdbuf -oL $script
+        fi
     fi
 done
