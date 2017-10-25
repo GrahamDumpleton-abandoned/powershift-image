@@ -2,14 +2,15 @@ This package provides a plugin for the ``powershift`` command line client
 which contains commands for assisting in the building and running of Python
 S2I based images with OpenShift.
 
-This includes adding OpenShift V2 style action hooks, as well as extensions
-to additionally allow environment variables to be dynamically set for both
-builds and deployments. Additional hooks scripts can be provided related to
-verifying an image after a build, performing initial setup of data required
-by an application, data migration on deployments with updated application
-source code, readiness checks and liveness checks. Commands are also
-provided for starting an interactive shell or running programs with the
-same environment as an application is deployed with.
+This includes adding OpenShift V2 style action hooks and cron job scripts,
+as well as extensions to additionally allow environment variables to be
+dynamically set for both builds and deployments. Additional hooks
+scripts can be provided related to verifying an image after a build,
+performing initial setup of data required by an application, data
+migration on deployments with updated application source code, readiness
+checks and liveness checks. Commands are also provided for starting an
+interactive shell or running programs with the same environment as an
+application is deployed with.
 
 This package requires that the ``powershift-cli`` package also be installed.
 To install the ``powershift-cli`` package, and the ``powershift`` command
@@ -80,6 +81,7 @@ To see all available commands you can use inbuilt help features of the
       alive     Trigger action hook which tests if alive.
       assemble  Runs the build process for the image.
       exec      Run a command with application environment.
+      jobs      Run cron job scripts in specified category.
       migrate   Triggers action hook to migrate any data.
       ready     Trigger action hook which tests if ready.
       run       Runs the application built into the image.
@@ -234,6 +236,50 @@ configurations if required. This makes it possible to make changes to what
 is run from the hook script and you do not need to ensure you update the
 build or deployment configuration in sync with the changes to the
 application source code.
+
+Executing Cron Job Scripts
+--------------------------
+
+Under OpenShift V2, in addition to the action hooks mechanism, it was also
+possible to provide sets of scripts to be executed at regular intervals by
+``cron`` running in the OpenShift environment.
+
+This script doesn't provide a replacement for ``cron``, but does provide
+a helper command for executing a set of scripts under a specified
+category, such as 'hourly'. This command could be run in a distinct
+container to the running application from an OpenShift *CronJob*, or by a
+daemon process running in the application container which implements
+cron like functionality.
+
+There is no restriction on the category names for the cron job scripts, but
+as a starting point it is suggested you use the same names supported under
+OpenShift V2. For each category you want to use, create a sub directory
+under ``.s2i/cron_jobs``. For example:
+
+* ``.s2i/cron_jobs/minutely``
+* ``.s2i/cron_jobs/hourly``
+* ``.s2i/cron_jobs/daily``
+* ``.s2i/cron_jobs/weekly``
+* ``.s2i/cron_jobs/monthly``
+
+In that sub directory, add your cron jobs script and make the script file
+executable. For example, if you were running a web application which used
+Django, you might create the cron job script::
+
+    .s2i/cron_jobs/hourly/clearsessions
+
+where the contents of the executable script file contains::
+
+    #!/bin/bash
+
+    set -eo pipefail
+
+    python manage.py clearsessions
+
+The command used with the OpenShift *CronJob* set to be executed hourly
+would then be::
+
+    powershift image jobs hourly
 
 Interactive Shell and Commands
 ------------------------------
