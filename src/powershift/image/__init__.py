@@ -140,3 +140,16 @@ def command_image_migrate(ctx):
     path = os.path.join(scripts, 'migrate.sh')
 
     os.execl(path, path)
+
+@group_image.command('jobs')
+@click.pass_context
+@click.argument('category', required=True)
+def command_image_migrate(ctx):
+    """
+    Run cron job scripts in specified category.
+
+    """
+
+    path = os.path.join(scripts, 'jobs.sh')
+
+    os.execl(path, path)

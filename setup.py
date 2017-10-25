@@ -33,8 +33,8 @@ setup_kwargs = dict(
     extras_require={'cli': ['powershift-cli>=1.2.0']},
     entry_points = {'powershift_cli_plugins': ['image = powershift.image']},
     package_data = {'powershift.image.scripts': ['alive.sh', 'assemble.sh',
-        'exec.sh', 'migrate.sh', 'ready.sh', 'run.sh', 'setup.sh', 'shell.sh',
-        'verify.sh']},
+        'exec.sh', 'jobs.sh', 'migrate.sh', 'ready.sh', 'run.sh', 'setup.sh',
+        'shell.sh', 'verify.sh']},
 )
 
 setup(**setup_kwargs)
