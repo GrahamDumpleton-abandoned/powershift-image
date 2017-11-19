@@ -29,6 +29,16 @@ if [ x"$S2I_SOURCE_PATH" != x`pwd` ]; then
     exit 1
 fi
 
+# The container will run as an arbitrary user ID. The base image
+# provides a script for intercepting access to the passwd database so
+# that valid user entries are returned. Make sure this is executed
+# here so that anything run from subsequent scripts inherits any
+# environment variables it sets.
+
+if [ -f $S2I_APPLICATION_PATH/etc/generate_container_user ]; then
+    . $S2I_APPLICATION_PATH/etc/generate_container_user
+fi
+
 # Now source the 'deploy_env' script from the '.s2i/action_hooks'
 # directory if it exists. This script allows a user to dynamically set
 # additional environment variables required by the deploy process. These
