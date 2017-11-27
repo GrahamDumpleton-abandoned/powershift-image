@@ -2,7 +2,7 @@ This package provides a plugin for the ``powershift`` command line client
 which contains commands for assisting in the building and running of Python
 S2I based images with OpenShift.
 
-This includes adding OpenShift V2 style action hooks and cron job scripts,
+This includes adding OpenShift V2 style action hooks and job scripts,
 as well as extensions to additionally allow environment variables to be
 dynamically set for both builds and deployments. Additional hooks
 scripts can be provided related to verifying an image after a build,
@@ -81,7 +81,7 @@ To see all available commands you can use inbuilt help features of the
       alive     Trigger action hook which tests if alive.
       assemble  Runs the build process for the image.
       exec      Run a command with application environment.
-      jobs      Run cron job scripts in specified category.
+      jobs      Run job scripts in specified category.
       migrate   Triggers action hook to migrate any data.
       ready     Trigger action hook which tests if ready.
       run       Runs the application built into the image.
@@ -251,22 +251,22 @@ container to the running application from an OpenShift *CronJob*, or by a
 daemon process running in the application container which implements
 cron like functionality.
 
-There is no restriction on the category names for the cron job scripts, but
+There is no restriction on the category names for the job scripts, but
 as a starting point it is suggested you use the same names supported under
 OpenShift V2. For each category you want to use, create a sub directory
-under ``.s2i/cron_jobs``. For example:
+under ``.s2i/jobs``. For example:
 
-* ``.s2i/cron_jobs/minutely``
-* ``.s2i/cron_jobs/hourly``
-* ``.s2i/cron_jobs/daily``
-* ``.s2i/cron_jobs/weekly``
-* ``.s2i/cron_jobs/monthly``
+* ``.s2i/jobs/minutely``
+* ``.s2i/jobs/hourly``
+* ``.s2i/jobs/daily``
+* ``.s2i/jobs/weekly``
+* ``.s2i/jobs/monthly``
 
-In that sub directory, add your cron jobs script and make the script file
+In that sub directory, add your jobs script and make the script file
 executable. For example, if you were running a web application which used
 Django, you might create the cron job script::
 
-    .s2i/cron_jobs/hourly/clearsessions
+    .s2i/jobs/hourly/clearsessions
 
 where the contents of the executable script file contains::
 

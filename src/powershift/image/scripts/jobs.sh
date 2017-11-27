@@ -61,14 +61,31 @@ if [ x"S2I_MARKERS_ENVIRON" != x"" ]; then
     fi
 fi
 
-# Run any user supplied cron jobs matching specified category. When running
+# Run any user supplied jobs matching specified category. When running
 # the scripts, partially disable buffering of stdout for the script so that
 # we are more likely to capture output and it isn't lost, if it was being
 # buffered and the program executed by the script crashes.
+#
+# Note that originally called the directory cron_jobs to match what was
+# used on OpenShift V2, but want to generalise it to any sort of jobs
+# you want to run, such as from hooks in OpenShift 3. Still look in the
+# cron_jobs directory for now, but will remove later.
 
-echo " -----> Executing cron jobs ($1)"
+echo " -----> Executing jobs ($1)"
 
 for script in $S2I_SOURCE_PATH/.s2i/cron_jobs/$1/*; do
+    if [ -f $script ]; then
+        if [ ! -x $script ]; then
+            echo "ERROR: Script $script not executable."
+            exit 1
+        else
+            echo " -----> Running $script"
+            stdbuf -oL $script
+        fi
+    fi
+done
+
+for script in $S2I_SOURCE_PATH/.s2i/jobs/$1/*; do
     if [ -f $script ]; then
         if [ ! -x $script ]; then
             echo "ERROR: Script $script not executable."
