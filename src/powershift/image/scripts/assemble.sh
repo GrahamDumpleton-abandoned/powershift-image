@@ -121,5 +121,5 @@ fi
 fix-permissions $S2I_SOURCE_PATH
 
 if [ x`dirname $S2I_SOURCE_PATH` != x"$S2I_APPLICATION_PATH" ]; then
-    fix-permissions $S2I_SOURCE_PATH
+    fix-permissions $S2I_APPLICATION_PATH
 fi
