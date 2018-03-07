@@ -36,15 +36,17 @@ fi
 
 S2I_POWERSHIFT_PATH=`which powershift`
 
-mv $S2I_POWERSHIFT_PATH $S2I_POWERSHIFT_PATH-script.py
+if [ ! -f $S2I_POWERSHIFT_PATH-script.py ]; then
+    mv $S2I_POWERSHIFT_PATH $S2I_POWERSHIFT_PATH-script.py
 
-cat >> $S2I_POWERSHIFT_PATH << EOF
+    cat >> $S2I_POWERSHIFT_PATH << EOF
 #!/bin/bash
 
 exec -a powershift $S2I_POWERSHIFT_PATH-script.py "\$@"
 EOF
 
-chmod +x $S2I_POWERSHIFT_PATH
+    chmod +x $S2I_POWERSHIFT_PATH
+fi
 
 # At this point the application source code is still located under the
 # directory '/tmp/src'. The source code or application artefacts
